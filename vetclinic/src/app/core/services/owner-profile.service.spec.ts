@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OwnerProfile } from './owner-profile.service';
+import { OwnerProfileService } from './owner-profile.service';
 
-describe('OwnerProfile', () => {
-  let service: OwnerProfile;
+describe('OwnerProfileService', () => {
+  let service: OwnerProfileService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(OwnerProfile);
+    service = TestBed.inject(OwnerProfileService);
   });
 
   it('should be created', () => {
