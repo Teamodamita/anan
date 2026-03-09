@@ -1,9 +1,9 @@
 {
-  "usuarios": [
+  "user": [
     {
       "user_id": 1,
-      "nombres": "Carlos Mendoza",
-      "usuario": "cmendoza",
+      "name": "Carlos Mendoza",
+      "user": "cmendoza",
       "email": "carlos.mendoza@email.com",
       "num": "987654321",
       "createdAt": "2024-01-15T08:00:00"
