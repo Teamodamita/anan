@@ -5,9 +5,9 @@ import { User } from '../models/user';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private readonly api = 'http://localhost:3000/usuarios';
+  private readonly api = 'http://localhost:3000/user';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.api);
@@ -17,12 +17,16 @@ export class UserService {
     return this.http.get<User>(`${this.api}/${id}`);
   }
 
-  create(usuario: Omit<User, 'user_id'>): Observable<User> {
-    return this.http.post<User>(this.api, usuario);
+  getByEmail(email: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.api}?email=${email}`);
   }
 
-  update(id: number, usuario: Partial<User>): Observable<User> {
-    return this.http.patch<User>(`${this.api}/${id}`, usuario);
+  create(user: Omit<User, 'user_id'>): Observable<User> {
+    return this.http.post<User>(this.api, user);
+  }
+
+  update(id: number, data: Partial<User>): Observable<User> {
+    return this.http.patch<User>(`${this.api}/${id}`, data);
   }
 
   delete(id: number): Observable<void> {
