@@ -1,25 +1,22 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { AppointmentStatus } from '../../core/models/appointment';
 
-// aplica clase Bootstrap badge segun el status de la cita
-@Directive({ selector: '[appStatusBadge]', standalone: false })
+@Directive({ selector: '[appStatusBadge]', standalone: true })
 export class StatusBadgeDirective implements OnInit {
   @Input('appStatusBadge') status: AppointmentStatus = 'scheduled';
 
   private readonly badgeMap: Record<AppointmentStatus, string> = {
     scheduled: 'bg-primary',
-    ongoing: 'bg-warning text-dark',
+    ongoing:   'bg-warning text-dark',
     cancelled: 'bg-danger',
     completed: 'bg-success'
   };
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private readonly el: ElementRef, private readonly renderer: Renderer2) {}
 
   ngOnInit(): void {
-    const badgeClass = this.badgeMap[this.status] ?? 'bg-secondary';
+    const classes = (this.badgeMap[this.status] ?? 'bg-secondary').split(' ');
     this.renderer.addClass(this.el.nativeElement, 'badge');
-    badgeClass.split(' ').forEach(cls =>
-      this.renderer.addClass(this.el.nativeElement, cls)
-    );
+    classes.forEach((cls) => this.renderer.addClass(this.el.nativeElement, cls));
   }
 }

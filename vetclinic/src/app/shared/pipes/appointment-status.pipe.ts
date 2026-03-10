@@ -1,12 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { AppointmentStatus } from '../../core/models/appointment';
 
-// mapea el status a etiqueta visual en español
-@Pipe({ name: 'appointmentStatus', standalone: false })
+@Pipe({ name: 'appointmentStatus', standalone: true })
 export class AppointmentStatusPipe implements PipeTransform {
   private readonly statusMap: Record<AppointmentStatus, string> = {
     scheduled: 'Programada',
-    ongoing: 'En curso',
+    ongoing:   'En curso',
     cancelled: 'Cancelada',
     completed: 'Completada'
   };
