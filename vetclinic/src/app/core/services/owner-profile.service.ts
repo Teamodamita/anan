@@ -7,7 +7,7 @@ import { OwnerProfile } from '../models/owner-profile';
 export class OwnerProfileService {
   private readonly api = 'http://localhost:3000/ownerProfiles';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getAll(): Observable<OwnerProfile[]> {
     return this.http.get<OwnerProfile[]>(this.api);
@@ -19,5 +19,13 @@ export class OwnerProfileService {
 
   getByUser(userId: number): Observable<OwnerProfile[]> {
     return this.http.get<OwnerProfile[]>(`${this.api}?user_id=${userId}`);
+  }
+
+  create(profile: Omit<OwnerProfile, 'owner_id'>): Observable<OwnerProfile> {
+    return this.http.post<OwnerProfile>(this.api, profile);
+  }
+
+  update(id: number, data: Partial<OwnerProfile>): Observable<OwnerProfile> {
+    return this.http.patch<OwnerProfile>(`${this.api}/${id}`, data);
   }
 }

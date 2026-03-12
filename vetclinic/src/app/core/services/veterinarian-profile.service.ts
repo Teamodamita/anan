@@ -7,7 +7,7 @@ import { VeterinarianProfile } from '../models/veterinarian-profile';
 export class VeterinarianProfileService {
   private readonly api = 'http://localhost:3000/veterinarianProfiles';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getAll(): Observable<VeterinarianProfile[]> {
     return this.http.get<VeterinarianProfile[]>(this.api);
@@ -19,5 +19,13 @@ export class VeterinarianProfileService {
 
   getByUser(userId: number): Observable<VeterinarianProfile[]> {
     return this.http.get<VeterinarianProfile[]>(`${this.api}?user_id=${userId}`);
+  }
+
+  create(profile: Omit<VeterinarianProfile, 'veterinarian_id'>): Observable<VeterinarianProfile> {
+    return this.http.post<VeterinarianProfile>(this.api, profile);
+  }
+
+  update(id: number, data: Partial<VeterinarianProfile>): Observable<VeterinarianProfile> {
+    return this.http.patch<VeterinarianProfile>(`${this.api}/${id}`, data);
   }
 }
