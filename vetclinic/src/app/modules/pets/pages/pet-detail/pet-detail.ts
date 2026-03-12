@@ -27,10 +27,10 @@ import { StatusBadgeDirective } from '../../../../shared/directives/status-badge
   styleUrl: './pet-detail.css'
 })
 export class PetDetail implements OnInit {
-  pet: Pet | null              = null;
-  appointments: Appointment[]  = [];
-  isLoading                    = true;
-  isVet                        = false;
+  pet: Pet | null             = null;
+  appointments: Appointment[] = [];
+  isLoading                   = true;
+  isVet                       = false;
 
   readonly speciesColors: Record<string, string> = {
     dog:   'species-dog',
@@ -50,8 +50,8 @@ export class PetDetail implements OnInit {
     const session = this.authService.getSession();
     if (!session) { this.router.navigate(['/auth/login']); return; }
 
-    this.isVet = session.role === 'vet';
-    const id   = Number(this.route.snapshot.paramMap.get('id'));
+    this.isVet   = session.role === 'vet';
+    const id     = Number(this.route.snapshot.paramMap.get('id'));
 
     this.petService.getById(id).subscribe({
       next: (pet) => {
@@ -65,7 +65,13 @@ export class PetDetail implements OnInit {
     });
   }
 
-  goBack(): void        { this.router.navigate(['/pets']); }
-  goToEdit(): void      { this.router.navigate(['/pets/edit', this.pet?.pet_id]); }
-  goToNewAppt(): void   { this.router.navigate(['/appointments/new'], { queryParams: { pet_id: this.pet?.pet_id } }); }
+  goBack(): void      { this.router.navigate(['/pets']); }
+  goToEdit(): void    { this.router.navigate(['/pets/edit', this.pet?.pet_id]); }
+  goToNewAppt(): void { this.router.navigate(['/appointments/new'], { queryParams: { pet_id: this.pet?.pet_id } }); }
+
+  goToHistory(): void {
+    this.router.navigate(['/history'], {
+      queryParams: { pet_id: this.pet?.pet_id }
+    });
+  }
 }

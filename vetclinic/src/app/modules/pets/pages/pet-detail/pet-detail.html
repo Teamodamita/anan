@@ -1,14 +1,12 @@
 <div class="vc-pets-page">
   <div class="container py-5">
 
-    <!-- Loading -->
     <div *ngIf="isLoading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status"></div>
     </div>
 
     <div *ngIf="!isLoading && pet">
 
-      <!-- Back -->
       <button class="btn vc-btn-back mb-4" (click)="goBack()">
         <i class="bi bi-arrow-left me-2"></i>Volver
       </button>
@@ -53,10 +51,17 @@
                 <button class="btn vc-btn-appt" (click)="goToNewAppt()">
                   <i class="bi bi-calendar-plus me-2"></i>Nueva cita
                 </button>
+                <button class="btn vc-btn-history" (click)="goToHistory()">
+                  <i class="bi bi-clipboard2-pulse me-2"></i>Ver historial
+                </button>
               </div>
-              <div class="mt-4" *ngIf="isVet">
-                <button class="btn vc-btn-appt w-100" (click)="goToNewAppt()">
+
+              <div class="d-flex flex-column gap-2 mt-4" *ngIf="isVet">
+                <button class="btn vc-btn-appt" (click)="goToNewAppt()">
                   <i class="bi bi-calendar-plus me-2"></i>Agendar cita
+                </button>
+                <button class="btn vc-btn-history" (click)="goToHistory()">
+                  <i class="bi bi-clipboard2-pulse me-2"></i>Ver historial
                 </button>
               </div>
             </div>
@@ -73,13 +78,11 @@
               <span class="vc-appt-count">{{ appointments.length }} citas</span>
             </div>
 
-            <!-- Empty appointments -->
             <div *ngIf="appointments.length === 0" class="text-center py-4">
               <img src="#" alt="Sin citas" class="vc-empty-img mb-3" />
               <p class="text-muted mb-0">No hay citas registradas para esta mascota.</p>
             </div>
 
-            <!-- Appointments list -->
             <div
               *ngFor="let appt of appointments"
               class="vc-appt-row"
@@ -95,10 +98,7 @@
                   <i class="bi bi-clock me-1"></i>{{ appt.duration_minutes }} min
                 </span>
               </div>
-              <span
-                [appStatusBadge]="appt.status"
-                class="vc-appt-status"
-              >
+              <span [appStatusBadge]="appt.status" class="vc-appt-status">
                 {{ appt.status | appointmentStatus }}
               </span>
             </div>
