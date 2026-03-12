@@ -41,7 +41,7 @@ export class Landing implements OnInit {
 
   readonly features: FeatureCard[] = [
     { icon: 'bi-calendar2-heart', title: 'Agenda rápida',             description: 'Reserva una cita en segundos desde cualquier dispositivo.', colorClass: 'feature-blue'  },
-    { icon: 'bi-shield-heart',    title: 'Historial completo',         description: 'Todos los registros médicos de tu mascota en un solo lugar.', colorClass: 'feature-green' },
+    { icon: 'bi-files',    title: 'Historial completo',         description: 'Todos los registros médicos de tu mascota en un solo lugar.', colorClass: 'feature-green' },
     { icon: 'bi-bell-fill',       title: 'Recordatorios inteligentes', description: 'Recibe alertas de vacunas, controles y desparasitaciones.',   colorClass: 'feature-amber' }
   ];
 

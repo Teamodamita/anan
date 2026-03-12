@@ -1,0 +1,124 @@
+<div class="vc-appts-page">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-7">
+
+        <button class="btn vc-btn-back mb-4" (click)="goBack()">
+          <i class="bi bi-arrow-left me-2"></i>Volver
+        </button>
+
+        <div class="vc-panel">
+
+          <div class="text-center mb-4">
+            <div class="vc-form-icon mx-auto mb-3">
+              <i class="bi bi-calendar-plus-fill"></i>
+            </div>
+            <h4 class="vc-panel-title">
+              {{ isEditMode ? 'Editar cita' : 'Nueva cita' }}
+            </h4>
+            <p class="vc-page-subtitle mb-0">
+              {{ isEditMode ? 'Modifica los datos de la cita' : 'Agenda una cita para tu mascota' }}
+            </p>
+          </div>
+
+          <div *ngIf="errorMessage" class="alert vc-alert-error d-flex align-items-center gap-2 mb-3">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            <span>{{ errorMessage }}</span>
+          </div>
+
+          <div *ngIf="isLoading" class="text-center py-3">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+
+          <form *ngIf="!isLoading" (ngSubmit)="onSubmit()" novalidate>
+            <div class="row g-3">
+
+              <!-- Mascota -->
+              <div class="col-12">
+                <label class="vc-label">Mascota</label>
+                <div class="vc-input-wrap">
+                  <i class="bi bi-heart-pulse vc-input-icon"></i>
+                  <select class="form-select vc-input" [(ngModel)]="petId" name="petId" required>
+                    <option [value]="0" disabled>Selecciona una mascota</option>
+                    <option *ngFor="let pet of pets" [value]="pet.pet_id">
+                      {{ pet.name }} · {{ pet.breed }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Veterinario -->
+              <div class="col-12">
+                <label class="vc-label">Veterinario</label>
+                <div class="vc-input-wrap">
+                  <i class="bi bi-person-badge vc-input-icon"></i>
+                  <select class="form-select vc-input" [(ngModel)]="veterinarianId" name="vetId" required>
+                    <option [value]="0" disabled>Selecciona un veterinario</option>
+                    <option *ngFor="let v of vetOptions" [value]="v.veterinarian_id">
+                      {{ v.name }} — {{ v.specialty }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Fecha y hora -->
+              <div class="col-12 col-md-6">
+                <label class="vc-label">Fecha y hora</label>
+                <div class="vc-input-wrap">
+                  <i class="bi bi-calendar3 vc-input-icon"></i>
+                  <input
+                    type="datetime-local"
+                    class="form-control vc-input"
+                    [(ngModel)]="datetime"
+                    name="datetime"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Duración -->
+              <div class="col-12 col-md-6">
+                <label class="vc-label">Duración</label>
+                <div class="d-flex flex-wrap gap-2 mt-1">
+                  <button
+                    *ngFor="let d of durationOptions"
+                    type="button"
+                    class="btn vc-duration-btn"
+                    [class.selected]="durationMinutes === d"
+                    (click)="durationMinutes = d"
+                  >
+                    {{ d }} min
+                  </button>
+                </div>
+              </div>
+
+              <!-- Motivo -->
+              <div class="col-12">
+                <label class="vc-label">Motivo de la consulta</label>
+                <div class="vc-input-wrap">
+                  <i class="bi bi-chat-text vc-input-icon" style="top: 16px; transform: none;"></i>
+                  <textarea
+                    class="form-control vc-input vc-textarea"
+                    placeholder="Describe el motivo de la consulta"
+                    [(ngModel)]="reason"
+                    name="reason"
+                    rows="3"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+
+            </div>
+
+            <button type="submit" class="btn vc-btn-submit w-100 mt-4" [disabled]="isSaving">
+              <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
+              <i *ngIf="!isSaving" class="bi bi-check-lg me-2"></i>
+              {{ isSaving ? 'Guardando...' : (isEditMode ? 'Guardar cambios' : 'Agendar cita') }}
+            </button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
