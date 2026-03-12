@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../modules/auth/service/auth.service';
 
 export interface NavLink {
   label: string;
@@ -13,7 +14,7 @@ export interface NavLink {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css',
+  styleUrl: './navbar.css'
 })
 export class Navbar implements OnInit {
   @Input() brandName: string = 'Vet Clinic';
@@ -28,15 +29,46 @@ export class Navbar implements OnInit {
 
   isScrolled  = false;
   isMenuOpen  = false;
+  isLoggedIn  = false;
+  userName    = '';
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router:      Router,
+    private readonly authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.checkSession();
+
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', () => {
         this.isScrolled = window.scrollY > 20;
       });
     }
+  }
+
+  checkSession(): void {
+    const session = this.authService.getSession();
+    this.isLoggedIn = !!session;
+    this.userName   = session?.user.name ?? '';
+  }
+
+  goToProfile(): void {
+    const session = this.authService.getSession();
+    if (!session) return;
+    const route = session.role === 'vet'
+      ? '/auth/profile/vet'
+      : '/auth/profile/owner';
+    this.router.navigate([route]);
+    this.isMenuOpen = false;
+  }
+
+  logout(): void {
+    this.authService.clearSession();
+    this.isLoggedIn = false;
+    this.userName   = '';
+    this.router.navigate(['/']);
+    this.isMenuOpen = false;
   }
 
   navigateTo(route: string): void {

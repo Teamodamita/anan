@@ -9,7 +9,7 @@ export interface FooterSection { title: string; links: FooterLink[]; }
   standalone: true,
   imports: [CommonModule],
   templateUrl: './footer.html',
-  styleUrl: './footer.css',
+  styleUrl: './footer.css'
 })
 export class Footer {
   @Input() brandName: string = 'Vet Clinic';

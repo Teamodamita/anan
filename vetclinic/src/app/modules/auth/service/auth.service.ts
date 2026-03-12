@@ -85,31 +85,32 @@ export class AuthService {
   }
 
   // ── Private helpers ──────────────────────────────────────────
-  private resolveAuthUser(user: User): Observable<AuthUser> {
-    return this.roleService.getByUser(user.user_id).pipe(
-      switchMap((userRoles) => {
-        const rolId = userRoles[0]?.rol_id ?? 1;
-        const role: RoleName = rolId === 2 ? 'vet' : 'owner';
+ private resolveAuthUser(user: User): Observable<AuthUser> {
+  return this.roleService.getByUser(user.user_id).pipe(
+    switchMap((userRoles) => {
+      const rolId = userRoles[0]?.rol_id ?? 1;
+      const role: RoleName = rolId === 2 ? 'vet' : 'owner';
 
-        const profile$ = role === 'owner'
-          ? this.ownerService.getByUser(user.user_id)
-          : this.vetService.getByUser(user.user_id);
-
-        return profile$.pipe(
-          map((profiles) => {
-            const authUser: AuthUser = { user, role };
-            if (role === 'owner') {
-              authUser.ownerProfile = (profiles as OwnerProfile[])[0];
-            } else {
-              authUser.vetProfile = (profiles as VeterinarianProfile[])[0];
-            }
-            return authUser;
-          })
+      if (role === 'owner') {
+        return this.ownerService.getByUser(user.user_id).pipe(
+          map((profiles): AuthUser => ({
+            user,
+            role,
+            ownerProfile: profiles[0]
+          }))
         );
-      })
-    );
-  }
+      }
 
+      return this.vetService.getByUser(user.user_id).pipe(
+        map((profiles): AuthUser => ({
+          user,
+          role,
+          vetProfile: profiles[0]
+        }))
+      );
+    })
+  );
+}
   private createProfile(
     userId: number,
     role: RoleName
