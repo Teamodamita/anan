@@ -6,7 +6,6 @@ import { AuthService } from '../../service/auth.service';
 import { AuthUser } from '../../models/auth.model';
 import { PaymentMethod } from '../../../../core/models/owner-profile';
 
-
 @Component({
   selector: 'app-profile-owner',
   standalone: true,
